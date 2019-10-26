@@ -56,7 +56,7 @@ def settings(config, *, db_colors=False, databases=True, test_runner=True, stati
             config['DATABASES'] = {'default': None}
 
         conn_max_age = config.get('CONN_MAX_AGE', MAX_CONN_AGE)
-            
+
         if db_colors:
             # Support all Heroku databases.
             # TODO: This appears to break TestRunner.
@@ -86,7 +86,7 @@ def settings(config, *, db_colors=False, databases=True, test_runner=True, stati
     if test_runner:
         # Enable test runner if found in CI environment.
         if 'CI' in os.environ:
-            config['TEST_RUNNER'] = 'django_heroku.HerokuDiscoverRunner'
+            config['TEST_RUNNER'] = 'django_on_heroku.HerokuDiscoverRunner'
 
     # Staticfiles configuration.
     if staticfiles:
@@ -153,4 +153,3 @@ def settings(config, *, db_colors=False, databases=True, test_runner=True, stati
             logger.info('Adding $SECRET_KEY to SECRET_KEY Django setting.')
             # Set the Django setting from the environment variable.
             config['SECRET_KEY'] = os.environ['SECRET_KEY']
-

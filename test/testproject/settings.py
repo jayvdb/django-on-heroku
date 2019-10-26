@@ -16,10 +16,10 @@ import sys
 
 # Hack for running app directly.
 sys.path.insert(0, os.path.abspath('..'))
-# Hack for tests. 
+# Hack for tests.
 sys.path.insert(0, os.path.abspath('.'))
 
-import django_heroku
+import django_on_heroku
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -129,4 +129,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-django_heroku.settings(locals())
+django_on_heroku.settings(locals())

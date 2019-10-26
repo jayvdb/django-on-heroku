@@ -12,15 +12,15 @@ from shutil import rmtree
 from setuptools import find_packages, setup, Command
 
 # Package meta-data.
-NAME = 'django-heroku'
-DESCRIPTION = 'This is a Django library for Heroku apps.'
-URL = 'https://github.com/heroku/django-heroku'
-EMAIL = 'kreitz@salesforce.com'
-AUTHOR = 'Kenneth Reitz'
+NAME = 'django-on-heroku'
+DESCRIPTION = 'This package simplifies running a Django app on Heroku platform.'
+URL = 'https://github.com/pkrefta/django-on-heroku'
+EMAIL = 'pawelkrefta@salesforce.com'
+AUTHOR = 'Pawel Krefta'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-    'dj-database-url>=0.5.0', 'whitenoise', 'psycopg2', 'django'
+    'dj-database-url>=0.5.0', 'whitenoise', 'psycopg2-binary', 'django'
 ]
 
 # The rest you shouldn't have to touch too much :)
@@ -37,7 +37,7 @@ with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 # Load the package's __version__.py module as a dictionary.
 about = {}
-with open(os.path.join(here, 'django_heroku', '__version__.py')) as f:
+with open(os.path.join(here, 'django_on_heroku', '__version__.py')) as f:
     exec(f.read(), about)
 
 
@@ -96,6 +96,7 @@ setup(
     classifiers=[
         # Trove classifiers
         # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
+        'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.6',
@@ -105,6 +106,8 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy'
     ],

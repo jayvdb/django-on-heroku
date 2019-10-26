@@ -1,5 +1,16 @@
-Django-Heroku (Python Library)
-==============================
+django-on-heroku (Python Library)
+=================================
+
+This has been forked from `django-heroku <https://github.com/heroku/django-heroku>`_ because it was abandoned and then renamed to **django-on-heroku** because old project has been archived.
+
+Current updates:
+
+- changed ``psycopg2`` to ``psycopg2-binary`` so it works and is installable
+- renamed package from ``django-heroku`` to ``django-on-heroku``
+
+Old README is below - will be updated later.
+
+--------------
 
 .. image:: https://travis-ci.org/heroku/django-heroku.svg?branch=master
     :target: https://travis-ci.org/heroku/django-heroku
@@ -23,8 +34,8 @@ In ``settings.py``, at the very bottom::
 
     …
     # Configure Django App for Heroku.
-    import django_heroku
-    django_heroku.settings(locals())
+    import django_on_heroku
+    django_on_heroku.settings(locals())
 
 This will automatically configure ``DATABASE_URL``, ``ALLOWED_HOSTS``, WhiteNoise (for static assets), Logging, and Heroku CI for your application.
 
@@ -46,5 +57,5 @@ Disabling Functionality
 
 You can also just use this library to provide a test runner for your Django application, for use on Heroku CI::
 
-    import django_heroku
-    TEST_RUNNER = 'django_heroku.HerokuDiscoverRunner'
+    import django_on_heroku
+    TEST_RUNNER = 'django_on_heroku.HerokuDiscoverRunner'
