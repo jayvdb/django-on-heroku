@@ -25,18 +25,8 @@ class HerokuDiscoverRunner(DiscoverRunner):
 
     def _wipe_tables(self, connection):
         with connection.cursor() as cursor:
-            cursor.execute(
-                """
-                    DROP TABLE (
-                        SELECT
-                            table_name
-                        FROM
-                            information_schema.tables
-                        WHERE
-                            table_schema = 'public'
-                    ) CASCADE;
-                """
-            )
+            for table_name in connection.introspection.table_names():
+                cursor.execute(f"DROP TABLE IF EXISTS {table_name} CASCADE")
 
     def teardown_databases(self, old_config, **kwargs):
         self.keepdb = True
@@ -78,7 +68,7 @@ def settings(config, *, db_colors=False, databases=True, test_runner=True, stati
 
             # Enable test database if found in CI environment.
             if 'CI' in os.environ:
-                config['DATABASES']['default']['TEST'] = config['DATABASES']['default']
+                config['DATABASES']['default']['TEST'] = config['DATABASES']['default'].copy()
 
         else:
             logger.info('$DATABASE_URL not found, falling back to previous settings!')
@@ -98,11 +88,21 @@ def settings(config, *, db_colors=False, databases=True, test_runner=True, stati
         # Ensure STATIC_ROOT exists.
         os.makedirs(config['STATIC_ROOT'], exist_ok=True)
 
-        # Insert Whitenoise Middleware.
+
+        # Insert Whitenoise Middleware either directly after SecurityMiddleware or the top of the list
+        _MIDDLEWARE_CLASSES = 'MIDDLEWARE_CLASSES'
+        _MIDDLEWARE = 'MIDDLEWARE'
+        middleware_key = _MIDDLEWARE_CLASSES if _MIDDLEWARE_CLASSES in config else _MIDDLEWARE
+
+        middleware = list(config[middleware_key])
+
         try:
-            config['MIDDLEWARE_CLASSES'] = tuple(['whitenoise.middleware.WhiteNoiseMiddleware'] + list(config['MIDDLEWARE_CLASSES']))
-        except KeyError:
-            config['MIDDLEWARE'] = tuple(['whitenoise.middleware.WhiteNoiseMiddleware'] + list(config['MIDDLEWARE']))
+            idx = middleware.index('django.middleware.security.SecurityMiddleware')
+        except ValueError:
+            idx = -1
+
+        middleware.insert(idx + 1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+        config[middleware_key] = tuple(middleware)
 
         # Enable GZip.
         config['STATICFILES_STORAGE'] = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

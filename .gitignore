@@ -101,3 +101,9 @@ ENV/
 .mypy_cache/
 
 /test/staticfiles/
+
+# pytest
+.pytest_cache
+
+# VS Code
+ .vscode/*

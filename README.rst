@@ -5,8 +5,11 @@ This has been forked from `django-heroku <https://github.com/heroku/django-herok
 
 Current updates:
 
-- changed ``psycopg2`` to ``psycopg2-binary`` so it works and is installable
 - renamed package from ``django-heroku`` to ``django-on-heroku``
+- changed ``psycopg2`` to ``psycopg2-binary`` so it works and is installable
+- added installation instructions
+- fixed wipe'ing tables in Postgres
+- ``whitenoise.middleware.WhiteNoiseMiddleware`` is injected after ``django.middleware.security.SecurityMiddleware``
 
 Old README is below - will be updated later.
 
@@ -26,6 +29,11 @@ This library provides:
 --------------
 
 Django 2.0 is targeted, but older versions of Django should be compatible. Only Python 3 is supported.
+
+Installation
+------------
+
+    pip install django-heroku
 
 Usage of Django-Heroku
 ----------------------
