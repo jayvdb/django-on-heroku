@@ -1,16 +1,28 @@
-import sys
 import os
 import imp
-
 import pytest
 
 import testproject.settings as config
+
+
+def test_geodjango_databases():
+    # Mock geodjango environment.
+    os.environ['BUILD_WITH_GEO_LIBRARIES'] = '1'
+    os.environ['DATABASE_URL'] = 'postgres://fake:fake@fake.com/fake'
+    imp.reload(config)
+
+    assert 'django.contrib.gis' in config.DATABASES['default']['ENGINE']
+
+    # Cleanup environment for further tests.
+    del os.environ['BUILD_WITH_GEO_LIBRARIES']
+
 
 def test_databases():
     os.environ['DATABASE_URL'] = 'postgres://fake:fake@fake.com/fake'
     imp.reload(config)
 
     assert 'postgres' in config.DATABASES['default']['ENGINE']
+
 
 def test_test_runner():
     # Mock CI environment.
@@ -21,6 +33,7 @@ def test_test_runner():
 
     # Cleanup environment for further tests.
     del os.environ['CI']
+
 
 def test_staticfiles():
     imp.reload(config)

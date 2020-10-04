@@ -40,7 +40,6 @@ Usage of Django-Heroku
 
 In ``settings.py``, at the very bottom::
 
-    …
     # Configure Django App for Heroku.
     import django_on_heroku
     django_on_heroku.settings(locals())
@@ -60,6 +59,15 @@ Disabling Functionality
 - ``allowed_hosts``
 - ``logging``
 - ``secret_key``
+
+-----------------------
+
+
+Geodjango support
+///////////////////////
+To enable the Geodjango support pass the ``geodjango`` flag as ``True`` when calling ``settings()``::
+
+    django_heroku.settings(locals(), geodjango=True)
 
 -----------------------
 
