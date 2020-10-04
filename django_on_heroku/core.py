@@ -4,11 +4,6 @@ import os
 import dj_database_url
 from django.test.runner import DiscoverRunner
 
-MAX_CONN_AGE = int(os.environ.get('MAX_CONN_AGE', 600))
-
-print('ENVIRON')
-print(MAX_CONN_AGE)
-
 logger = logging.getLogger(__name__)
 
 
