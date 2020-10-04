@@ -4,7 +4,10 @@ import os
 import dj_database_url
 from django.test.runner import DiscoverRunner
 
-MAX_CONN_AGE = 600
+MAX_CONN_AGE = int(os.environ.get('MAX_CONN_AGE', 600))
+
+print('ENVIRON')
+print(MAX_CONN_AGE)
 
 logger = logging.getLogger(__name__)
 
@@ -46,7 +49,8 @@ def settings(
         allowed_hosts=True,
         logging=True,
         secret_key=True,
-        geodjango=False
+        geodjango=False,
+        db_ssl_required=True
 ):
     # Database configuration.
     # TODO: support other database (e.g. TEAL, AMBER, etc, automatically.)
@@ -55,7 +59,7 @@ def settings(
         if 'DATABASES' not in config:
             config['DATABASES'] = {'default': None}
 
-        conn_max_age = config.get('CONN_MAX_AGE', MAX_CONN_AGE)
+        conn_max_age = config.get('CONN_MAX_AGE', int(os.environ.get('CONN_MAX_AGE', 600)))
 
         if db_colors:
             # Support all Heroku databases.
@@ -66,12 +70,16 @@ def settings(
 
                     logger.info('Adding ${} to DATABASES Django setting ({}).'.format(env, db_color))
 
-                    config['DATABASES'][db_color] = dj_database_url.parse(url, conn_max_age=conn_max_age, ssl_require=True)
+                    config['DATABASES'][db_color] = dj_database_url.parse(
+                        url,
+                        conn_max_age=conn_max_age,
+                        ssl_require=db_ssl_required
+                    )
 
         if 'DATABASE_URL' in os.environ:
             logger.info('Adding $DATABASE_URL to default DATABASE Django setting.')
 
-            db_config = dj_database_url.config(conn_max_age=conn_max_age, ssl_require=True)
+            db_config = dj_database_url.config(conn_max_age=conn_max_age, ssl_require=db_ssl_required)
 
             if geodjango:
                 if 'postgres' in db_config['ENGINE']:
@@ -109,7 +117,6 @@ def settings(
 
         # Ensure STATIC_ROOT exists.
         os.makedirs(config['STATIC_ROOT'], exist_ok=True)
-
 
         # Insert Whitenoise Middleware either directly after SecurityMiddleware or the top of the list
         _MIDDLEWARE_CLASSES = 'MIDDLEWARE_CLASSES'

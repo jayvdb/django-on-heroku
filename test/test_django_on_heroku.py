@@ -1,5 +1,4 @@
 import os
-import pytest
 import importlib
 
 import testproject.settings as config
@@ -20,8 +19,17 @@ def test_geodjango_databases():
 def test_databases():
     os.environ['DATABASE_URL'] = 'postgres://fake:fake@fake.com/fake'
     importlib.reload(config)
-
     assert 'postgres' in config.DATABASES['default']['ENGINE']
+
+
+def test_max_conn_age():
+    os.environ['CONN_MAX_AGE'] = '700'
+    os.environ['DATABASE_URL'] = 'postgres://fake:fake@fake.com/fake'
+    importlib.reload(config)
+
+    assert config.DATABASES['default']['CONN_MAX_AGE'] == 700
+
+    del os.environ['CONN_MAX_AGE']
 
 
 def test_test_runner():
@@ -37,23 +45,17 @@ def test_test_runner():
 
 def test_staticfiles():
     importlib.reload(config)
-
     assert config.STATIC_URL == '/static/'
-
-    print(config.MIDDLEWARE)
-
     assert 'whitenoise' in config.MIDDLEWARE[1].lower()
 
 
 def test_allowed_hosts():
     importlib.reload(config)
-
     assert config.ALLOWED_HOSTS == ['*']
 
 
 def test_logging():
     importlib.reload(config)
-
     assert 'console' in config.LOGGING['handlers']
 
 

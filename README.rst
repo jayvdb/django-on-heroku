@@ -11,12 +11,7 @@ Current updates:
 - fixed wipe'ing tables in Postgres
 - ``whitenoise.middleware.WhiteNoiseMiddleware`` is injected after ``django.middleware.security.SecurityMiddleware``
 
-Old README is below - will be updated later.
-
 --------------
-
-.. image:: https://travis-ci.org/heroku/django-heroku.svg?branch=master
-    :target: https://travis-ci.org/heroku/django-heroku
 
 This is a Django library for Heroku applications that ensures a seamless deployment and development experience.
 
@@ -46,7 +41,11 @@ In ``settings.py``, at the very bottom::
 
 This will automatically configure ``DATABASE_URL``, ``ALLOWED_HOSTS``, WhiteNoise (for static assets), Logging, and Heroku CI for your application.
 
-**Bonus points!** If you set the ``SECRET_KEY`` environment variable, it will automatically be used in your Django settings, too!
+**Bonus points!**
+
+If you set the ``SECRET_KEY`` environment variable, it will automatically be used in your Django settings, too!
+
+If you set the ``CONN_MAX_AGE`` environment variable, it will automatically be used in your database settings, too!
 
 Disabling Functionality
 ///////////////////////
@@ -59,6 +58,8 @@ Disabling Functionality
 - ``allowed_hosts``
 - ``logging``
 - ``secret_key``
+- ``geodjango``
+- ``db_ssl_required``
 
 -----------------------
 
