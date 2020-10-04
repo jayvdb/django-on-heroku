@@ -47,6 +47,13 @@ If you set the ``SECRET_KEY`` environment variable, it will automatically be use
 
 If you set the ``CONN_MAX_AGE`` environment variable, it will automatically be used in your database settings, too!
 
+Enabling Functionality
+///////////////////////
+
+``settings()`` accepts keyword arguments that are by default set to ``False``
+
+- ``geodjango`` - set it to ``True`` if you want to use GeoDjango in our app
+
 Disabling Functionality
 ///////////////////////
 
@@ -58,17 +65,7 @@ Disabling Functionality
 - ``allowed_hosts``
 - ``logging``
 - ``secret_key``
-- ``geodjango``
 - ``db_ssl_required``
-
------------------------
-
-
-Geodjango support
-///////////////////////
-To enable the Geodjango support pass the ``geodjango`` flag as ``True`` when calling ``settings()``::
-
-    django_heroku.settings(locals(), geodjango=True)
 
 -----------------------
 
