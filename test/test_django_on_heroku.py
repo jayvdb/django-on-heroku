@@ -1,6 +1,6 @@
 import os
-import imp
 import pytest
+import importlib
 
 import testproject.settings as config
 
@@ -9,7 +9,7 @@ def test_geodjango_databases():
     # Mock geodjango environment.
     os.environ['BUILD_WITH_GEO_LIBRARIES'] = '1'
     os.environ['DATABASE_URL'] = 'postgres://fake:fake@fake.com/fake'
-    imp.reload(config)
+    importlib.reload(config)
 
     assert 'django.contrib.gis' in config.DATABASES['default']['ENGINE']
 
@@ -19,7 +19,7 @@ def test_geodjango_databases():
 
 def test_databases():
     os.environ['DATABASE_URL'] = 'postgres://fake:fake@fake.com/fake'
-    imp.reload(config)
+    importlib.reload(config)
 
     assert 'postgres' in config.DATABASES['default']['ENGINE']
 
@@ -27,7 +27,7 @@ def test_databases():
 def test_test_runner():
     # Mock CI environment.
     os.environ['CI'] = '1'
-    imp.reload(config)
+    importlib.reload(config)
 
     assert 'heroku' in config.TEST_RUNNER.lower()
 
@@ -36,7 +36,7 @@ def test_test_runner():
 
 
 def test_staticfiles():
-    imp.reload(config)
+    importlib.reload(config)
 
     assert config.STATIC_URL == '/static/'
 
@@ -46,13 +46,13 @@ def test_staticfiles():
 
 
 def test_allowed_hosts():
-    imp.reload(config)
+    importlib.reload(config)
 
     assert config.ALLOWED_HOSTS == ['*']
 
 
 def test_logging():
-    imp.reload(config)
+    importlib.reload(config)
 
     assert 'console' in config.LOGGING['handlers']
 
@@ -60,5 +60,5 @@ def test_logging():
 def test_secret_key():
     os.environ['SECRET_KEY'] = 'SECRET'
 
-    imp.reload(config)
+    importlib.reload(config)
     assert config.SECRET_KEY == 'SECRET'
