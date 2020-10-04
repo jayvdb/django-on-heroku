@@ -33,7 +33,7 @@ Django 2.0 is targeted, but older versions of Django should be compatible. Only 
 Installation
 ------------
 
-    pip install django-heroku
+    pip install django-on-heroku
 
 Usage of Django-Heroku
 ----------------------
